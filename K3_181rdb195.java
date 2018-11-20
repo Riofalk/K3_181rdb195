@@ -1,5 +1,4 @@
 import java.util.*;
-import java.lang.*;
 
 public class K3_181rdb195 {
 	
