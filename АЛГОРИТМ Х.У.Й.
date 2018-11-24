@@ -1,0 +1,120 @@
+		    case 1:
+		    	
+		    //Я хуй его знает как называется этот алгоритм, писал с головы, ещё эту хуйню и переворачивать, пидор-гроб.
+		    	
+		    boolean [][] washere = new boolean[r][c];  //Помечаем, были ли мы в этой точке или нет.
+		    boolean [][] washereQ = new boolean[r][c]; //Добавлен ли он в очередь
+		    int [][] movement = new int [r][c];        //Помечаем, как мы пришли к этой точке: 1-сверху, 2-снизу, 3-слева, 4-справа
+		    int [][] queue = new int [r*c][2];         //Координаты точек, которые должны быть обработаны
+		    int qHead = 0, qTale = 0;                  //Токены для очереди 
+		    int CCposition=0, CRposition=0;
+		    
+		    do {
+		    	
+		      if (!(c==CCposition+1))
+		        if(l[CRposition][CCposition+1]==0 && !washere[CRposition][CCposition+1] && !washereQ[CRposition][CCposition+1]) {                               //Вправо
+
+		    	qTale++;                           //Вставляем элемент в очередь, повышая её конец на 1
+		    	queue[qTale][0]=CRposition;
+		    	queue[qTale][1]=CCposition+1;
+		    	washereQ[CRposition][CCposition+1]=true;
+		    	movement[CRposition][CCposition+1]=3;
+		        }
+
+		      if (!(r==CRposition+1))
+			        if(l[CRposition+1][CCposition]==0 && !washere[CRposition+1][CCposition] && !washereQ[CRposition+1][CCposition]) {                               //Низ
+			       	
+			    	qTale++;                         //Вставляем элемент в очередь, повышая её конец на 1
+			    	queue[qTale][0]=CRposition+1;
+			    	queue[qTale][1]=CCposition;
+			    	washereQ[CRposition+1][CCposition]=true;
+			    	movement[CRposition+1][CCposition]=1;
+			        }
+		      
+		      if (!(0==CCposition))
+			        if(l[CRposition][CCposition-1]==0 && !washere[CRposition][CCposition-1] && !washereQ[CRposition][CCposition-1]) {                               //Лево
+			  	
+			    	qTale++;                         //Вставляем элемент в очередь, повышая её конец на 1
+			    	queue[qTale][0]=CRposition;
+			    	queue[qTale][1]=CCposition-1;
+			    	washereQ[CRposition][CCposition-1]=true;
+			    	movement[CRposition][CCposition-1]=4;
+			        }
+
+		      if (!(0==CRposition))
+			        if(l[CRposition-1][CCposition]==0 && !washere[CRposition-1][CCposition] && !washereQ[CRposition-1][CCposition]) {                               //Верх
+			      
+			    	qTale++;                          //Вставляем элемент в очередь, повышая её конец на 1
+			    	queue[qTale][0]=CRposition-1;
+			    	queue[qTale][1]=CCposition;
+			    	washereQ[CRposition-1][CCposition]=true;
+			    	movement[CRposition-1][CCposition]=2;
+			        }
+
+		      washere[CRposition][CCposition] = true;           //Помечаем, что мы были в этой точке
+		      qHead++;                                          //Передвигаем очередь на +1
+		      
+		      if (!(qHead-1==qTale)) {
+		        CRposition=queue[qHead][0];
+		        CCposition=queue[qHead][1];
+		      }
+		    
+		    
+		      if (washere[r-2][c-1]) {
+		        CRposition=r-2;
+		        CCposition=c-1;
+		        break;	
+		      }
+		    
+		      if (washere[r-1][c-2]) {
+			        CRposition=r-1;
+			        CCposition=c-2;
+			        break;	
+			      }
+		    }		
+		    
+		    while (!(qHead-1==qTale));
+		    
+		    CRposition=r-1;CCposition=c-1;
+            
+		    
+            //Вписываем результаты
+		    i=0;
+		    do {
+		   
+		      if (movement[CRposition][CCposition]==1) {
+		        path[i][0]=CRposition+1;
+		        path[i][1]=CCposition+1;
+		        i++;
+		        CRposition--;
+		      }	      
+		      
+		      if (movement[CRposition][CCposition]==2) {
+			      path[i][0]=CRposition+1;
+			      path[i][1]=CCposition+1;
+			      i++;
+			      CRposition++;
+			  }	      
+		      
+		      if (movement[CRposition][CCposition]==3) {
+			      path[i][0]=CRposition+1;
+			      path[i][1]=CCposition+1;
+			      i++;
+			      CCposition--;
+			  }
+		      
+		      if (movement[CRposition][CCposition]==4) {
+			      path[i][0]=CRposition+1;
+			      path[i][1]=CCposition+1;
+			      i++;
+			      CCposition++;
+			  }
+		    
+		    }
+		    
+		    while (!(CRposition==0 && CCposition==0));
+		    path[i][0]=1;
+		    path[i][1]=1;
+		    
+		    
+		    break;
